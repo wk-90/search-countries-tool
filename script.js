@@ -6,19 +6,22 @@ var countriesList = $('#countries');
 // click search - running main function
 $('#search').click(searchCountries)
 
-// running main function after Enter
+// running main function on Enter click
 $('#country-name').keypress(function(){
     if (event.which == 13) searchCountries()
 });
 
 // hiding div with country flag
+
+var cInfo = $('section');
 var cFlag = $('#c-flag');
 cFlag.hide();
+cInfo.hide();
 
 // main function
 function searchCountries() {
     var countryName = $('#country-name').val();
-    if (!countryName.length) countryName = 'Poland';
+    if (!countryName.length) cInfo.hide();
 
     $.ajax({
         url: url + countryName,
@@ -42,6 +45,7 @@ function searchCountries() {
 $('#countries').on('click', 'li', function(){
     var clickedItem = $(this).attr('key');
     cFlag.show();
+    cInfo.show();
 
     var cname = $('#c-name');
     var capital = $('#cap');
@@ -57,7 +61,7 @@ $('#countries').on('click', 'li', function(){
     capital.children().text(countries[clickedItem].capital);
     population.children().text(countries[clickedItem].population.toLocaleString("pl-PL"));
     area.children().first().text(countries[clickedItem].area.toLocaleString("pl-PL"));
-    language.children().text(countries[clickedItem].languages.map(l => l.name));
+    language.children().text(countries[clickedItem].languages.map(l => ' ' + l.name));
     currency.children().text(countries[clickedItem].currencies.map(c => c.name + ' - ' + c.code));
     dialing.children().text('+' + countries[clickedItem].callingCodes);
 
