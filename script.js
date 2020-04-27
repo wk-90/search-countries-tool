@@ -1,5 +1,5 @@
 
-// variables
+// main variables
 var url = 'https://restcountries.eu/rest/v2/name/';
 var countriesList = $('#countries');
 
@@ -11,18 +11,24 @@ $('#country-name').keypress(function(){
     if (event.which == 13) searchCountries()
 });
 
-// hiding div with country flag
+// hiding div with country flag, section, h2
 
 var cInfo = $('section');
 var cFlag = $('#c-flag');
+var h2CountriesList = $('h2');
 cFlag.hide();
 cInfo.hide();
+h2CountriesList.hide();
 
 // main function
 function searchCountries() {
     var countryName = $('#country-name').val();
-    if (!countryName.length) cInfo.hide();
-
+    if (!countryName.length) {
+        cInfo.hide();
+        countriesList.empty();
+        h2CountriesList.hide();
+    };
+   
     $.ajax({
         url: url + countryName,
         method: 'GET',
@@ -32,6 +38,7 @@ function searchCountries() {
     function showCountriesList(resp){
         countriesList.empty();
         countries = resp;
+        h2CountriesList.show();
         
         countries.forEach(function(item, index) {
             if(item.name.toLowerCase().includes(countryName.toLowerCase())) {
